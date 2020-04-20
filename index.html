@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>OUTPUT PRINTER</title>
+</head>
+<body>
+    <section class="cmd-wrapper">
+        <h3 class="heading">Output Printer<span class="cursor"></span></h3>
+        <h6 class="sub-heading">** For better experience use a PC/rotate your phone **</h6>
+        <!-- <input type="text" class="" id="pc-name" placeholder="Enter your PC Name" onkeypress="ChangePc()" onkeyup="ChangePc()"/>         -->
+        <div class="input-wrapper row d-flex justify-content-center" id="input-wrapper">
+        <input type="text" id="input" placeholder="Enter text here..." onkeypress="PrintOut()" onkeyup="PrintOut()" ondblclick="LnBrk(this)">
+        </div>
+
+        <center>
+            <button class="btn btn-warning" id="new" onclick="CreateLine()">New Command</button>
+            <a class="download" href="#"><button class="btn btn-primary">Download Image</button></a>
+        </center>
+
+        <br>
+        <div class="container" id="cmd">
+            <p>Microsoft Windows [Version 10.0.18362.778]<br>(c) 2019 Microsoft Corporation. All rights reserved.</p>
+            <br>    
+            <p>C:\Users\<span class="pc" id="pc">Administrator</span>><span id="output">java hello.java</span><span class="cursor" id="cursor"></span></p>
+        </div>
+
+    <br>
+    
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Instruction Manual</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <ol>
+                <li>Double click/tap on textbox to add a line break.</li>
+                <li>To write a new command, use the new textbox created on clicking new command.</li>
+            </ol>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Created By Friendly World</p>
+    </div>
+</body>
+<script>
+   function LnBrk(element){
+    console.log(element.id);
+    let ln = element.value + "<br>";
+    document.getElementById(`${element.id}`).value = ln;
+   }
+      function CreateLine(){
+       let container = document.getElementById('cmd');
+       let newln = document.createElement('p');
+       u_id = Math.random()*7*Math.random();
+       newln.innerHTML = `C:\\Users\\<span class="pc" id="pc">Administrator</span>><span id="${u_id}"></span>`;
+       container.append(newln); 
+       createTextArea(u_id);
+   }
+   function createTextArea(txt_id){
+       let i_wrapper = document.getElementById('input-wrapper');
+       let txtArea = document.createElement('input');
+       txtArea.type = "text";
+       txtArea.id =  txt_id+"txtarea";
+       
+       txtArea.placeholder = "Enter text here..";
+       i_wrapper.append(txtArea);
+       txtArea.onkeypress = () => {
+        let input = document.getElementById(`${txt_id+"txtarea"}`).value;
+        document.getElementById(`${txt_id}`).innerHTML = input;
+       }
+       txtArea.onkeyup = () => {
+        let input = document.getElementById(`${txt_id+"txtarea"}`).value;
+        document.getElementById(`${txt_id}`).innerHTML = input;
+       }
+       txtArea.ondblclick = () => {
+        let brk = document.getElementById(`${txt_id+"txtarea"}`).value+"<br>";
+        document.getElementById(`${txt_id+"txtarea"}`).value = brk;
+       }
+   }
+   function ChangePc(){
+       let pc_name = document.getElementById('pc-name').value;
+       (pc_name == "") ? pc_name="Administrator" : pc_name ; 
+       console.log(pc_name);
+       for( let i = 0 ; i<=10 ; i++){
+        document.getElementsByClassName('pc')[i].innerHTML = pc_name;
+       }     
+    }
+   function PrintOut(){
+    let input = document.getElementById('input').value;
+    document.getElementById('output').innerHTML = input;  
+    }
+
+</script>
+<script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="grenade.js"></script>
+  <script>
+      $(document).ready(() => {
+        $('#myModal').modal('show');
+      });
+  </script>
+<script>
+let convertMeToImg = $('#cmd')[0];
+let x = 0;
+let getCanvas;
+$('.download').on('click', () => {
+    html2canvas($('#cmd')[0]).then(function(canvas) {
+    console.log(canvas);
+    saveAs(canvas.toDataURL(), `output[${x}].png`);
+    });
+    
+    x++;
+});
+
+function saveAs(uri, filename) {
+
+var link = document.createElement('a');
+
+if (typeof link.download === 'string') {
+
+    link.href = uri;
+    link.download = filename;
+
+    //Firefox requires the link to be in the body
+    document.body.appendChild(link);
+
+    //simulate click
+    link.click();
+
+    //remove the link when done
+    document.body.removeChild(link);
+
+} else {
+
+    window.open(uri);
+
+}
+}
+
+</script>
+</html>
